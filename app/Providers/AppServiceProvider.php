@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,5 +26,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
+        Gate::define('update-question', function($user, $question) {
+            return $user->id === $question->user_id;
+        });
+
+        Gate::define('delete-question', function($user, $question) {
+            return $user->id === $question->user_id;
+        });
     }
 }
