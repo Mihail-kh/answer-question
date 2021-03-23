@@ -14,6 +14,12 @@ class QuestionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index', 'show']]);
+    }
+
     public function index()
     {
         $questions = Question::with('user')->latest()->paginate(10);
@@ -65,6 +71,7 @@ class QuestionController extends Controller
      */
     public function edit(Question $question)
     {
+        $this->authorize('update', $question);
         return view('questions.edit', compact('question'));
     }
 
@@ -77,6 +84,7 @@ class QuestionController extends Controller
      */
     public function update(AskQuestionRequest $request, Question $question)
     {
+        $this->authorize('update', $question);
         $question->update($request->validated());
         return redirect()->route('questions.index')->withSuccess('Your question has been updated.');
     }
@@ -89,6 +97,7 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
+        $this->authorize('delete', $question);
         $question->delete();
         return redirect()->route('questions.index')->withSuccess('Your question has been deleted.');
     }
