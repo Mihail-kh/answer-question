@@ -78,7 +78,7 @@ form.form-delete {
 
 
         &.favorite {
-            &.favorite, &.favorite:hover {
+            &.favorited, &.favorite:hover {
                 color: $warning;
             }
         }
